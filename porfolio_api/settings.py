@@ -2,22 +2,34 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
 # --------------------------
 # BASE DIRECTORY
+# --------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --------------------------
 # SECURITY SETTINGS
+# --------------------------
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-nib6r1key=n_tb7ln&gsl6@vv#3vz*fn7)#)cd*9*!69xhk&s2")
 DEBUG = os.getenv("DEBUG", "True") == "True"
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "[]").split(",")  # e.g., "localhost,127.0.0.1"
 
+# ALLOWED HOSTS
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
+# --------------------------
+# CSRF TRUSTED ORIGINS (IMPORTANT)
+# --------------------------
+CSRF_TRUSTED_ORIGINS = [
+    "https://v0-mohammed-ali-portfolio.vercel.app",
+    "https://porfoliov1api.pythonanywhere.com",
+]
+
+# --------------------------
+# INSTALLED APPS
+# --------------------------
 INSTALLED_APPS = [
-    # Django default apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -30,15 +42,17 @@ INSTALLED_APPS = [
     'drf_yasg',
     'corsheaders',
 
-    # Local apps
+    # Local
     'api',
 ]
 
-
+# --------------------------
+# MIDDLEWARE
+# --------------------------
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',  
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -46,9 +60,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
 ROOT_URLCONF = 'porfolio_api.urls'
 
+# --------------------------
+# TEMPLATES
+# --------------------------
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -77,7 +93,7 @@ DATABASES = {
 }
 
 # --------------------------
-# PASSWORD VALIDATORS
+# PASSWORD VALIDATION
 # --------------------------
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
@@ -95,7 +111,7 @@ USE_I18N = True
 USE_TZ = True
 
 # --------------------------
-# STATIC & MEDIA FILES
+# STATIC & MEDIA
 # --------------------------
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -104,13 +120,11 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# --------------------------
-# DEFAULT AUTO FIELD
-# --------------------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # --------------------------
 # SITE CONFIGURATION
+# --------------------------
 SITE_NAME = os.getenv("SITE_NAME", "Portfolio Site")
 
 # --------------------------
@@ -133,8 +147,11 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3000",
     "https://v0-mohammed-ali-portfolio.vercel.app",
 ]
+
 CORS_ALLOW_CREDENTIALS = True
+
 CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
+
 CORS_ALLOW_HEADERS = [
     "content-type",
     "authorization",
