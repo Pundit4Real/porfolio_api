@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY SETTINGS
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-nib6r1key=n_tb7ln&gsl6@vv#3vz*fn7)#)cd*9*!69xhk&s2")
 DEBUG = os.getenv("DEBUG", "True") == "True"
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")  # e.g., "localhost,127.0.0.1"
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "[]").split(",")  # e.g., "localhost,127.0.0.1"
 
 
 INSTALLED_APPS = [
