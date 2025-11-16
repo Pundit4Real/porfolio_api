@@ -1,7 +1,8 @@
 from django.db import models
 from api.models.skills import Skill
+from porfolio_api.base_models import SlugBaseModel
 
-class Experience(models.Model):
+class Experience(SlugBaseModel):
     role = models.CharField(max_length=100)
     company = models.CharField(max_length=150)
     subtitle = models.CharField(max_length=200, blank=True)

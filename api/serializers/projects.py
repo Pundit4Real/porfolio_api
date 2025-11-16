@@ -1,0 +1,71 @@
+from rest_framework import serializers
+from api.models.projects import Project, Category, ProjectImage
+from api.models.skills import Skill
+
+
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = "__all__"
+
+
+class ProjectImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProjectImage
+        fields = ["id", "image"]
+
+
+class ProjectSerializer(serializers.ModelSerializer):
+    images = ProjectImageSerializer(many=True, read_only=True)
+
+    category = CategorySerializer(many=True, read_only=True)
+    category_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+        many=True,
+        write_only=True,
+        required=False
+    )
+
+    tech_stack = serializers.StringRelatedField(many=True, read_only=True)
+    tech_stack_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Skill.objects.all(),
+        many=True,
+        write_only=True,
+        required=False
+    )
+
+    class Meta:
+        model = Project
+        fields = [
+            "id", "title", "subtitle", "description",
+            "live_link", "live_demo", "github_link",
+            "tags", "category", "category_ids",
+            "tech_stack", "tech_stack_ids",
+            "images"
+        ]
+
+    def create(self, validated_data):
+        category_ids = validated_data.pop("category_ids", [])
+        tech_ids = validated_data.pop("tech_stack_ids", [])
+
+        project = Project.objects.create(**validated_data)
+        project.category.set(category_ids)
+        project.tech_stack.set(tech_ids)
+
+        return project
+
+    def update(self, instance, validated_data):
+        category_ids = validated_data.pop("category_ids", None)
+        tech_ids = validated_data.pop("tech_stack_ids", None)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        if category_ids is not None:
+            instance.category.set(category_ids)
+
+        if tech_ids is not None:
+            instance.tech_stack.set(tech_ids)
+
+        return instance

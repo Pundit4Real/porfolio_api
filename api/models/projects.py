@@ -1,8 +1,9 @@
 from django.db import models
 from api.models.skills import Skill
 from api.directories import project_image_directory
+from porfolio_api.base_models import SlugBaseModel
 
-class Project(models.Model):
+class Project(SlugBaseModel):
     title = models.CharField(max_length=150)
     subtitle = models.CharField(max_length=250, blank=True)
     description = models.TextField()
@@ -32,7 +33,7 @@ class Category(models.Model):
         return self.name
 
 
-class ProjectImage(models.Model):
+class ProjectImage(SlugBaseModel):
     project = models.ForeignKey(Project, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to=project_image_directory)
 

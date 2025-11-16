@@ -1,11 +1,12 @@
 from django.db import models
 from api.directories import about_directory
+from porfolio_api.base_models import SlugBaseModel
 
-class About(models.Model):
+class About(SlugBaseModel):
     bio = models.TextField()
     image = models.ImageField(upload_to=about_directory, blank=True, null=True)
     expertise = models.ManyToManyField('Expertise', related_name='abouts', blank=True)
-    tech_stack = models.ManyToManyField('api.models.skills.Skill', related_name='abouts', blank=True)
+    tech_stack = models.ManyToManyField('api.Skill', related_name='abouts', blank=True)
     
     class Meta:
         verbose_name = "About Section"
@@ -16,8 +17,10 @@ class About(models.Model):
     
 
 
-class Expertise(models.Model):
+class Expertise(SlugBaseModel):
     title = models.CharField(max_length=150)
+    proficiency_level = models.CharField(max_length=100, blank=True)
+    years_of_experience = models.PositiveIntegerField(default=0)
 
     class Meta:
         verbose_name = "Expertise"

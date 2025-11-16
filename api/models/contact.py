@@ -1,10 +1,11 @@
 from django.db import models
+from porfolio_api.base_models import SlugBaseModel
 
-class ContactMessage(models.Model):
+
+class ContactMessage(SlugBaseModel):
     name = models.CharField(max_length=100)
     email = models.EmailField()
     message = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
     responded = models.BooleanField(default=False)
     responded_at = models.DateTimeField(null=True, blank=True)
     response_message = models.TextField(blank=True)

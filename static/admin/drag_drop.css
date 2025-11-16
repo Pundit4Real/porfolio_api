@@ -1,0 +1,11 @@
+.drag-drop-zone {
+    border: 2px dashed #6c63ff;
+    padding: 18px;
+    border-radius: 12px;
+    background: #faf9ff;
+}
+
+.drag-drop-zone:hover {
+    border-color: #00bcd4;
+    background: #f0ffff;
+}
