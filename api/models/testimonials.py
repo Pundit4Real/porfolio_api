@@ -10,7 +10,7 @@ class Testimonial(SlugBaseModel):
     image = models.ImageField(upload_to=testimonial_directory, blank=True, null=True)
     date = models.DateField(auto_now_add=True)
     happy_client = models.IntegerField(default=1)
-    average_rating = models.FloatField(default=5.0)
+    rating = models.FloatField(default=5.0)
     satisfaction_rate = models.FloatField(default=100.0)
 
     class Meta:

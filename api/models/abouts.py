@@ -1,9 +1,11 @@
 from django.db import models
 from api.directories import about_directory
 from porfolio_api.base_models import SlugBaseModel
+from ckeditor.fields import RichTextField
 
 class About(SlugBaseModel):
-    bio = models.TextField()
+
+    bio = RichTextField(blank=True, null=True)    
     image = models.ImageField(upload_to=about_directory, blank=True, null=True)
     expertise = models.ManyToManyField('Expertise', related_name='abouts', blank=True)
     tech_stack = models.ManyToManyField('api.Skill', related_name='abouts', blank=True)

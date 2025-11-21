@@ -6,7 +6,7 @@ class Home(SlugBaseModel):
     name = models.CharField(max_length=100)
     title = models.CharField(max_length=200)
     description = models.TextField()
-    keywords = models.CharField(max_length=250, blank=True)
+    keywords = models.JSONField(default=list, blank=True, null=True)
     resume = models.FileField(upload_to=home_resume_directory, blank=True, null=True)
     profile_image = models.ImageField(upload_to=home_profile_directory, blank=True, null=True)
 
