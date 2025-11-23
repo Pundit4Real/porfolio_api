@@ -20,14 +20,24 @@ class BaseModel(models.Model):
 
 class SlugBaseModel(BaseModel):
     slug = models.SlugField(max_length=256, unique=True, editable=False)
+    slug_source_field: str = "title"  # Default field to generate slug from
 
     def save(self, *args, **kwargs):
-        # Check for 'title' or 'name' to generate the slug
-        title_or_name = getattr(self, "title", None) or getattr(self, "name", None)
+        """
+        Auto-generate a unique slug based on a defined source field.
+        Falls back to `title`, `name`, or a custom field specified in `slug_source_field`.
+        """
+        if not self.slug:
+            # Determine the field to use for slug
+            source_field = getattr(self, "slug_source_field", None)
+            value = getattr(self, source_field, None) if source_field else None
 
-        if title_or_name:
-            # Generate the slug only if 'title' or 'name' is available
-            self.slug = uuslug(title_or_name, instance=self)
+            # Fallback to 'title' or 'name' if no valid source field
+            if not value:
+                value = getattr(self, "title", None) or getattr(self, "name", None)
+
+            if value:
+                self.slug = uuslug(value, instance=self, max_length=256)
 
         super().save(*args, **kwargs)
 
