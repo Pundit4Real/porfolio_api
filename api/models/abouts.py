@@ -18,7 +18,6 @@ class About(SlugBaseModel):
         return "About Section"
     
 
-
 class Expertise(SlugBaseModel):
     title = models.CharField(max_length=150)
     proficiency_level = models.CharField(max_length=100, blank=True)
