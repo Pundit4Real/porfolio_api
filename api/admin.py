@@ -15,7 +15,7 @@ from django.utils.html import format_html
 class ExpertiseAdmin(admin.ModelAdmin):
     list_display = ['title', 'proficiency_level', 'years_of_experience']
     search_fields = ['title']
-    list_filter = ['proficiency_level','title']
+    list_filter = ['proficiency_level', 'title']
 
 
 @admin.register(About)
@@ -29,21 +29,17 @@ class AboutAdmin(admin.ModelAdmin):
 # ---------------------------
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
-    list_display = ['name','email','status_label','created_at','responded_at',]
+    list_display = ['name', 'email', 'status_label', 'created_at', 'responded_at']
     list_filter = ['responded', 'created_at']
     search_fields = ['name', 'email', 'message']
     readonly_fields = ['created_at', 'responded_at']
     actions = ['mark_as_responded']
 
     def status_label(self, obj):
-        """Human-friendly status indicator."""
-        if obj.responded:
-            return "Responded"
-        return "Pending"
+        return "Responded" if obj.responded else "Pending"
     status_label.short_description = "Status"
 
     def mark_as_responded(self, request, queryset):
-        """Bulk admin action to mark messages as responded."""
         count = 0
         for msg in queryset:
             if not msg.responded:
@@ -58,11 +54,13 @@ class ContactMessageAdmin(admin.ModelAdmin):
 
 @admin.register(ContactInfo)
 class ContactInfoAdmin(admin.ModelAdmin):
-    list_display = ['phone', 'email', 'linkedin', 'github', 'twitter', 'telegram']
+    list_display = ['address','phone', 'email', 'linkedin', 'github', 'twitter', 'telegram']
     search_fields = ['phone', 'email', 'linkedin', 'github', 'twitter', 'telegram']
+
 
 # ---------------------------
 # EXPERIENCE
+# ---------------------------
 @admin.register(Experience)
 class ExperienceAdmin(admin.ModelAdmin):
     list_display = ['role', 'company', 'start_date', 'end_date']
@@ -79,9 +77,13 @@ class HomeAdmin(admin.ModelAdmin):
 
 @admin.register(HeroSection)
 class HeroSectionAdmin(admin.ModelAdmin):
-    list_display = ['page','headline','subheadline']
+    list_display = ['page', 'headline', 'subheadline']
     search_fields = ['headline', 'subheadline']
 
+
+# ---------------------------
+# PROJECT + IMAGES
+# ---------------------------
 class ProjectImageInline(admin.TabularInline):
     model = ProjectImage
     extra = 1
@@ -104,17 +106,16 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(ProjectImage)
 class ProjectImageAdmin(admin.ModelAdmin):
-    list_display = ['project', 'slug', 'image_preview']
-    readonly_fields = ['slug', 'image_preview']
+    list_display = ['project', 'image_preview']
+    readonly_fields = ['image_preview']
     search_fields = ['project__title']
 
-
-        # The method must exist here as well
     def image_preview(self, obj):
         if obj.image:
             return format_html('<img src="{}" width="100" />', obj.image.url)
         return ""
     image_preview.short_description = "Preview"
+
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -122,7 +123,9 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
-
+# ---------------------------
+# SERVICES + SKILLS
+# ---------------------------
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ['title', 'highlight', 'price']
@@ -136,8 +139,17 @@ class SkillAdmin(admin.ModelAdmin):
     search_fields = ['name', 'level']
 
 
+# ---------------------------
+# TESTIMONIALS
+# ---------------------------
 @admin.register(Testimonial)
 class TestimonialAdmin(admin.ModelAdmin):
-    list_display = ['name', 'company', 'date', 'average_rating']
+    list_display = ['name', 'company', 'date', 'rating', 'average_rating_display']
     search_fields = ['name', 'role', 'company', 'feedback']
-    list_filter = ['date', 'happy_client']
+    list_filter = ['date']
+
+    def average_rating_display(self, obj):
+        stats = Testimonial.get_stats()
+        return stats.get("average_rating", 0)
+
+    average_rating_display.short_description = "Average Rating"

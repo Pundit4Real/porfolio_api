@@ -33,7 +33,7 @@ class Category(models.Model):
         return self.name
 
 
-class ProjectImage(SlugBaseModel):
+class ProjectImage(models.Model):
     project = models.ForeignKey(Project, related_name='images', on_delete=models.CASCADE)
     image = models.ImageField(upload_to=project_image_directory)
 

@@ -12,8 +12,11 @@ def hash_filename(slug, filename):
 
 def project_image_directory(instance, filename):
     """Project images."""
-    filename = hash_filename(instance.slug, filename)
+    project_slug = instance.project.slug  # Project has slug
+    filename = hash_filename(project_slug, filename)
     return os.path.join("images", "projects", filename)
+
+
 
 
 def about_directory(instance, filename):

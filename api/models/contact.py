@@ -22,6 +22,7 @@ class ContactMessage(SlugBaseModel):
 class ContactInfo(models.Model):
     headline = models.CharField(max_length=200, blank=True)
     subheadline = models.CharField(max_length=400, blank=True)
+    address = models.CharField(max_length=300, blank=True)
     phone = models.CharField(max_length=20, blank=True)
     email = models.EmailField(blank=True)
     linkedin = models.URLField(blank=True)
