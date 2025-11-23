@@ -17,7 +17,7 @@ class TestimonialViewSet(HeroPageMixin, viewsets.ModelViewSet):
         stats = Testimonial.get_stats()
 
         return Response({
-            "hero": None,
+            "hero": self.get_hero_data(),
             "stats": stats,
             "data": serializer.data
         })
