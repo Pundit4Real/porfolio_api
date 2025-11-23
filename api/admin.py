@@ -130,7 +130,7 @@ class CategoryAdmin(admin.ModelAdmin):
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ['title', 'highlight', 'price']
     search_fields = ['title', 'description', 'icon', 'price']
-    list_filter = ['highlight']
+    list_filter = ['highlight',"is_active"]
 
 
 @admin.register(Skill)
