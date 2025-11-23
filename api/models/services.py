@@ -4,7 +4,6 @@ from porfolio_api.base_models import SlugBaseModel
 class Service(SlugBaseModel):
     title = models.CharField(max_length=150)
     description = models.TextField()
-    icon = models.CharField(max_length=100, blank=True)   # name of lucide icon or custom
     price = models.CharField(max_length=100, blank=True)  # optional
     highlight = models.BooleanField(default=False)    
     
