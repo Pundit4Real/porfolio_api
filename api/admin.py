@@ -128,7 +128,7 @@ class CategoryAdmin(admin.ModelAdmin):
 # ---------------------------
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ['title', 'highlight', 'price']
+    list_display = ['title', 'highlight', 'price','is_active']
     search_fields = ['title', 'description', 'icon', 'price']
     list_filter = ['highlight',"is_active"]
 

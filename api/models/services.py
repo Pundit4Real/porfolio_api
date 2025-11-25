@@ -6,7 +6,8 @@ class Service(SlugBaseModel):
     description = models.TextField()
     price = models.CharField(max_length=100, blank=True)  # optional
     icon = models.CharField(max_length=100, blank=True)  # optional
-    highlight = models.BooleanField(default=False)    
+    highlight = models.BooleanField(default=False)  
+    url = models.URLField(blank=True)  # optional  
     
     class Meta:
         verbose_name = "Service"
