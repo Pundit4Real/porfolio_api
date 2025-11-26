@@ -1,5 +1,8 @@
 from time import timezone
 from django.contrib import admin
+from django.utils.html import format_html
+from django.contrib import admin
+from django.shortcuts import redirect
 from api.models.abouts import About, Expertise
 from api.models.contact import ContactMessage, ContactInfo
 from api.models.experience import Experience
@@ -8,7 +11,9 @@ from api.models.projects import Project, Category, ProjectImage
 from api.models.services import Service
 from api.models.skills import Skill
 from api.models.testimonials import Testimonial
-from django.utils.html import format_html
+from api.utils.contact_email import send_contact_reply_email
+from django.contrib import messages
+from django.utils import timezone
 
 
 @admin.register(Expertise)
@@ -33,24 +38,45 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_filter = ['responded', 'created_at']
     search_fields = ['name', 'email', 'message']
     readonly_fields = ['created_at', 'responded_at']
-    actions = ['mark_as_responded']
+    change_form_template = "admin/change_form.html"
 
     def status_label(self, obj):
-        return "Responded" if obj.responded else "Pending"
+        """Styled status badge for admin list."""
+        if obj.responded:
+            return format_html(
+                '<span style="padding:4px 8px; background:#10B981; color:white; '
+                'border-radius:4px; font-size:12px;">Responded</span>'
+            )
+        return format_html(
+            '<span style="padding:4px 8px; background:#EF4444; color:white; '
+            'border-radius:4px; font-size:12px;">Pending</span>'
+        )
     status_label.short_description = "Status"
 
-    def mark_as_responded(self, request, queryset):
-        count = 0
-        for msg in queryset:
-            if not msg.responded:
-                msg.responded = True
-                msg.responded_at = timezone.now()
-                msg.save()
-                count += 1
+    def response_change(self, request, obj):
+        """
+        Handles the Send Reply button.
+        """
+        if "send_reply" in request.POST:
 
-        self.message_user(request, f"{count} message(s) marked as responded.")
-    mark_as_responded.short_description = "Mark selected messages as responded"
+            # Ensure reply message is written
+            if not obj.response_message:
+                messages.error(request, "Please type a response message before sending.")
+                return redirect("admin:api_contactmessage_change", obj.id)
 
+            # Send the reply email
+            send_contact_reply_email(obj)
+
+            # Update status
+            obj.responded = True
+            obj.responded_at = timezone.now()
+            obj.save()
+
+            messages.success(request, "Reply email has been sent successfully.")
+            return redirect("admin:api_contactmessage_change", obj.id)
+
+        return super().response_change(request, obj)
+    
 
 @admin.register(ContactInfo)
 class ContactInfoAdmin(admin.ModelAdmin):

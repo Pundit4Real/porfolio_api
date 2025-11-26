@@ -1,19 +1,38 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8" />
-    <title>Message Received</title>
-</head>
-<body style="font-family: Arial, sans-serif; background:#f7f7f7; padding:40px;">
-    <div style="max-width:600px; margin:auto; background:white; padding:30px; border-radius:10px;">
-        <h2>Hello {{ name }},</h2>
-        <p>Thank you for reaching out! 👋</p>
-        <p>
-            Your message has been successfully delivered.  
-            I will get back to you as soon as possible.
-        </p>
-        <hr>
-        <p style="color:#888;">Best Regards,<br><strong>Mohammed Ali</strong></p>
-    </div>
-</body>
-</html>
+{% extends "contacts/base_email.html" %}
+
+{% block title %}Message Received{% endblock %}
+{% block header %}Message Received{% endblock %}
+
+{% block content %}
+
+<p style="font-size:15px; margin-bottom:18px; color:#1f2937;">
+    Hello <strong>{{ name }}</strong>,
+</p>
+
+<p style="margin-bottom:16px; color:#374151;">
+    Thank you for reaching out! 👋  
+    Your message has been successfully delivered.
+</p>
+
+<p style="margin-bottom:16px; color:#374151;">
+    I truly appreciate you taking the time to contact me.  
+    I’ll get back to you as soon as possible.
+</p>
+
+<div style="
+    margin:25px 0; 
+    padding:15px 18px; 
+    background:#f3f4f6; 
+    border-left:4px solid #4F46E5; 
+    border-radius:6px;
+    color:#1f2937;
+">
+    <em>We’ll be in touch shortly.</em>
+</div>
+
+<p style="margin-top: 30px; color:#4b5563;">
+    Best Regards,<br>
+    <strong style="font-size:15px; color:#111827;">Mohammed Ali</strong>
+</p>
+
+{% endblock %}

@@ -15,17 +15,17 @@ class ContactMessageViewSet(HeroPageMixin, viewsets.ModelViewSet):
     def perform_create(self, serializer):
         message = serializer.save() 
 
-        # Notify admin
         send_contact_message(
             name=message.name,
             email=message.email,
             subject=getattr(message, "subject", "New Message"),
             message=message.message,
-            phone=getattr(message, "phone", None)
+            phone=getattr(message, "phone", None),
+            service=message.service.title if message.service else "Not specified"
         )
 
-        # Acknowledgement email to sender
         send_contact_success_message(message.name, message.email)
+
 
     @action(detail=True, methods=["post"])
     def mark_responded(self, request, pk=None):

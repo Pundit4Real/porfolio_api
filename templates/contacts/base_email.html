@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Email Notification{% endblock %}</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #eef0f3;
+            font-family: "Segoe UI", Arial, sans-serif;
+            color: #1f2937;
+        }
+
+        .email-container {
+            width: 650px;
+            max-width: 94%;
+            margin: 40px auto;
+            background: #ffffff;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #4F46E5, #6366F1);
+            color: white;
+            padding: 32px 25px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+        }
+
+        /* Body content */
+        .content {
+            padding: 35px 28px 25px 28px;
+        }
+
+        .content p {
+            margin: 14px 0;
+            font-size: 15px;
+            color: #374151;
+            line-height: 1.65;
+        }
+
+        .label {
+            font-weight: 600;
+            color: #111827;
+        }
+
+        /* Reply or highlight box */
+        .reply-box {
+            background: #f3f4f6;
+            border-left: 4px solid #4F46E5;
+            padding: 16px 18px;
+            margin: 18px 0;
+            border-radius: 6px;
+            font-style: italic;
+            color: #1f2937;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 38px;
+            padding: 22px;
+            text-align: center;
+            background: #f9fafb;
+            font-size: 12.5px;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .footer p {
+            margin: 6px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="email-container">
+
+        <div class="header">
+            <h1>{% block header %}Notification{% endblock %}</h1>
+        </div>
+
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+
+            <div class="footer">
+                <p>Sent from my portfolio website</p>
+                <p>&copy; {{ year }} All rights reserved.</p>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+{% extends "contacts/base_email.html" %}
+
+{% block title %}Response to Your Message{% endblock %}
+
+{% block content %}
+
+<p style="font-size:15px; margin-bottom:18px; color:#1f2937;">
+    Hello <strong>{{ name }}</strong>,
+</p>
+<p>Thank you for contacting me through my portfolio website. I’ve received your message and here is my response:</p>
+
+{% if service %}
+<p><span class="label">Selected Service:</span> {{ service }}</p>
+{% endif %}
+
+<p><span class="label">Your Message:</span><br>{{ message }}</p>
+
+{% if reply %}
+<div class="reply-box">
+    <span class="label">Our Response:</span><br>{{ reply }}
+</div>
+{% endif %}
+
+<p>If you have more details to add or another question, feel free to reply directly to this email.</p>
+{% endblock %}
+
+{% block header %}Thank You for Reaching Out{% endblock %}
