@@ -147,7 +147,7 @@ ADMIN_EMAIL = os.getenv("ADMIN_EMAIL")
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
-    "https://v0-mohammed-ali-portfolio.vercel.app",
+    "https://moali.vercel.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
