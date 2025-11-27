@@ -65,7 +65,7 @@ class ContactMessageAdmin(admin.ModelAdmin):
                 return redirect("admin:api_contactmessage_change", obj.id)
 
             # Send the reply email
-            send_contact_reply_email(obj)
+            # send_contact_reply_email(obj)
 
             # Update status
             obj.responded = True
