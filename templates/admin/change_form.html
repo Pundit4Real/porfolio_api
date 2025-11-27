@@ -2,12 +2,13 @@
 
 {% block submit_buttons_bottom %}
     {{ block.super }}
-
-    <form method="post" style="display:inline; margin-left:10px;">
-        {% csrf_token %}
-        <input type="hidden" name="send_reply" value="1">
-        <button type="submit" class="button default" style="background:#4F46E5; border:none;">
-            Send Reply Email
-        </button>
-    </form>
+    {% if show_send_reply %}
+        <form method="post" style="display:inline; margin-left:10px;">
+            {% csrf_token %}
+            <input type="hidden" name="send_reply" value="1">
+            <button type="submit" class="button default" style="background:#4F46E5; border:none;">
+                Send Reply Email
+            </button>
+        </form>
+    {% endif %}
 {% endblock %}

@@ -53,21 +53,19 @@ class ContactMessageAdmin(admin.ModelAdmin):
         )
     status_label.short_description = "Status"
 
-    def response_change(self, request, obj):
-        """
-        Handles the Send Reply button.
-        """
-        if "send_reply" in request.POST:
+    def changeform_view(self, request, object_id=None, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['show_send_reply'] = True
+        return super().changeform_view(request, object_id, form_url, extra_context)
 
-            # Ensure reply message is written
+    def response_change(self, request, obj):
+        """Handles the Send Reply button."""
+        if "send_reply" in request.POST:
             if not obj.response_message:
                 messages.error(request, "Please type a response message before sending.")
                 return redirect("admin:api_contactmessage_change", obj.id)
 
-            # Send the reply email
             send_contact_reply_email(obj)
-
-            # Update status
             obj.responded = True
             obj.responded_at = timezone.now()
             obj.save()
@@ -76,7 +74,7 @@ class ContactMessageAdmin(admin.ModelAdmin):
             return redirect("admin:api_contactmessage_change", obj.id)
 
         return super().response_change(request, obj)
-    
+
 
 @admin.register(ContactInfo)
 class ContactInfoAdmin(admin.ModelAdmin):
