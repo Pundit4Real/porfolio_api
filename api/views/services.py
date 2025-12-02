@@ -7,5 +7,5 @@ from api.utils.hero_mixin import HeroPageMixin
 class ServiceViewSet(HeroPageMixin,viewsets.ModelViewSet):
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
-    filterset_fields = ['highlight',"is_active"]
+    filterset_fields = ['highlight',"is_active","category"]
     hero_page = "services"

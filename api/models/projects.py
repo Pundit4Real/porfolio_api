@@ -2,11 +2,12 @@ from django.db import models
 from api.models.skills import Skill
 from api.directories import project_image_directory
 from porfolio_api.base_models import SlugBaseModel
+from ckeditor.fields import RichTextField
 
 class Project(SlugBaseModel):
     title = models.CharField(max_length=150)
     subtitle = models.CharField(max_length=250, blank=True)
-    description = models.TextField()
+    description = RichTextField(blank=True, null=True)
     live_link = models.URLField(blank=True)
     live_demo = models.URLField(blank=True)
     github_link = models.URLField(blank=True)

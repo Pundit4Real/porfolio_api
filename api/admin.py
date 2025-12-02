@@ -143,7 +143,7 @@ class ProjectImageAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name']
+    list_display = ['name','id']
     search_fields = ['name']
 
 
@@ -152,9 +152,9 @@ class CategoryAdmin(admin.ModelAdmin):
 # ---------------------------
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ['title', 'highlight', 'price','is_active']
-    search_fields = ['title', 'description', 'icon', 'price']
-    list_filter = ['highlight',"is_active"]
+    list_display = ['title', 'highlight','is_active', 'price', 'category']
+    search_fields = ['title', 'description','price','category']
+    list_filter = ['highlight','is_active','category']
 
 
 @admin.register(Skill)
