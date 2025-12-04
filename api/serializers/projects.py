@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from api.models.projects import Project, categories, ProjectImage
+from api.models.projects import Project, Category, ProjectImage
 from api.models.skills import Skill
 
 
-class categoriesSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = categories
+        model = Category
         fields = "__all__"
 
 
@@ -18,9 +18,9 @@ class ProjectImageSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     images = ProjectImageSerializer(many=True, read_only=True)
 
-    categories = categoriesSerializer(many=True, read_only=True)
+    categories = CategorySerializer(many=True, read_only=True)
     categories_ids = serializers.PrimaryKeyRelatedField(
-        queryset=categories.objects.all(),
+        queryset=Category.objects.all(),
         many=True,
         write_only=True,
         required=False
