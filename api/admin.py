@@ -124,7 +124,7 @@ class ProjectImageInline(admin.TabularInline):
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ['title', 'subtitle']
     search_fields = ['title', 'subtitle', 'description', 'tags']
-    filter_horizontal = ['category', 'tech_stack']
+    filter_horizontal = ['categories', 'tech_stack']
     inlines = [ProjectImageInline]
 
 

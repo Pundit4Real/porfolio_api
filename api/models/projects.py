@@ -12,7 +12,7 @@ class Project(SlugBaseModel):
     live_demo = models.URLField(blank=True)
     github_link = models.URLField(blank=True)
     tags = models.CharField(max_length=200, blank=True)
-    category = models.ManyToManyField('Category', related_name='projects', blank=True)
+    categories = models.ManyToManyField('Category', related_name='projects', blank=True)
     tech_stack = models.ManyToManyField(Skill, related_name='projects', blank=True)
 
     class Meta:

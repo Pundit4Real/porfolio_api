@@ -1,11 +1,11 @@
 from rest_framework import serializers
-from api.models.projects import Project, Category, ProjectImage
+from api.models.projects import Project, categories, ProjectImage
 from api.models.skills import Skill
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class categoriesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Category
+        model = categories
         fields = "__all__"
 
 
@@ -18,9 +18,9 @@ class ProjectImageSerializer(serializers.ModelSerializer):
 class ProjectSerializer(serializers.ModelSerializer):
     images = ProjectImageSerializer(many=True, read_only=True)
 
-    category = CategorySerializer(many=True, read_only=True)
-    category_ids = serializers.PrimaryKeyRelatedField(
-        queryset=Category.objects.all(),
+    categories = categoriesSerializer(many=True, read_only=True)
+    categories_ids = serializers.PrimaryKeyRelatedField(
+        queryset=categories.objects.all(),
         many=True,
         write_only=True,
         required=False
@@ -39,31 +39,31 @@ class ProjectSerializer(serializers.ModelSerializer):
         fields = [
             "id", "title", "subtitle", "description",
             "live_link", "live_demo", "github_link",
-            "tags", "category", "category_ids",
+            "tags", "categories", "categories_ids",
             "tech_stack", "tech_stack_ids",
             "images"
         ]
 
     def create(self, validated_data):
-        category_ids = validated_data.pop("category_ids", [])
+        categories_ids = validated_data.pop("categories_ids", [])
         tech_ids = validated_data.pop("tech_stack_ids", [])
 
         project = Project.objects.create(**validated_data)
-        project.category.set(category_ids)
+        project.categories.set(categories_ids)
         project.tech_stack.set(tech_ids)
 
         return project
 
     def update(self, instance, validated_data):
-        category_ids = validated_data.pop("category_ids", None)
+        categories_ids = validated_data.pop("categories_ids", None)
         tech_ids = validated_data.pop("tech_stack_ids", None)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
         instance.save()
 
-        if category_ids is not None:
-            instance.category.set(category_ids)
+        if categories_ids is not None:
+            instance.categories.set(categories_ids)
 
         if tech_ids is not None:
             instance.tech_stack.set(tech_ids)
