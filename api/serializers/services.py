@@ -4,14 +4,9 @@ from api.serializers.projects import CategorySerializer
 
 
 class ServiceSerializer(serializers.ModelSerializer):
-    category = serializers.SerializerMethodField()
+    categories = CategorySerializer(many=True, read_only=True)
 
     class Meta:
         model = Service
         fields = "__all__"
-        filterset_fields = ['highlight', "is_active", 'category']
-
-    def get_category(self, obj):
-        if obj.category:
-            return [CategorySerializer(obj.category).data]
-        return []
+        filterset_fields = ['highlight', "is_active", 'categories']

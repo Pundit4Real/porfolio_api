@@ -1,8 +1,9 @@
-from time import timezone
 from django.contrib import admin
 from django.utils.html import format_html
-from django.contrib import admin
 from django.shortcuts import redirect
+from django.contrib import messages
+from django.utils import timezone
+
 from api.models.abouts import About, Expertise
 from api.models.contact import ContactMessage, ContactInfo
 from api.models.experience import Experience
@@ -12,10 +13,11 @@ from api.models.services import Service
 from api.models.skills import Skill
 from api.models.testimonials import Testimonial
 from api.utils.contact_email import send_contact_reply_email
-from django.contrib import messages
-from django.utils import timezone
 
 
+# ---------------------------
+# EXPERTISE & ABOUT
+# ---------------------------
 @admin.register(Expertise)
 class ExpertiseAdmin(admin.ModelAdmin):
     list_display = ['title', 'proficiency_level', 'years_of_experience']
@@ -41,7 +43,6 @@ class ContactMessageAdmin(admin.ModelAdmin):
     change_form_template = "admin/change_form.html"
 
     def status_label(self, obj):
-        """Styled status badge for admin list."""
         if obj.responded:
             return format_html(
                 '<span style="padding:4px 8px; background:#10B981; color:white; '
@@ -59,7 +60,6 @@ class ContactMessageAdmin(admin.ModelAdmin):
         return super().changeform_view(request, object_id, form_url, extra_context)
 
     def response_change(self, request, obj):
-        """Handles the Send Reply button."""
         if "send_reply" in request.POST:
             if not obj.response_message:
                 messages.error(request, "Please type a response message before sending.")
@@ -145,6 +145,7 @@ class ProjectImageAdmin(admin.ModelAdmin):
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name','id']
     search_fields = ['name']
+    list_filter = ['id','name']
 
 
 # ---------------------------
@@ -152,9 +153,14 @@ class CategoryAdmin(admin.ModelAdmin):
 # ---------------------------
 @admin.register(Service)
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ['title', 'highlight','is_active', 'price', 'category']
-    search_fields = ['title', 'description','price','category']
-    list_filter = ['highlight','is_active','category']
+    list_display = ['title', 'highlight', 'is_active', 'price', 'display_categories']
+    search_fields = ['title', 'description', 'price']
+    list_filter = ['highlight', 'is_active', 'categories']
+    filter_horizontal = ['categories']
+
+    def display_categories(self, obj):
+        return ", ".join([cat.name for cat in obj.categories.all()])
+    display_categories.short_description = "Categories"
 
 
 @admin.register(Skill)

@@ -4,23 +4,16 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# --------------------------
-# BASE DIRECTORY
-# --------------------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# --------------------------
-# SECURITY SETTINGS
-# --------------------------
+
 SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-nib6r1key=n_tb7ln&gsl6@vv#3vz*fn7)#)cd*9*!69xhk&s2")
 DEBUG = os.getenv("DEBUG", "True") == "True"
 
 # ALLOWED HOSTS
 ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
 
-# --------------------------
-# CSRF TRUSTED ORIGINS (IMPORTANT)
-# --------------------------
+
 CSRF_TRUSTED_ORIGINS = [
     "https://v0-mohammed-ali-portfolio.vercel.app",
     "https://porfoliov1api.pythonanywhere.com",
@@ -64,9 +57,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'porfolio_api.urls'
 
-# --------------------------
-# TEMPLATES
-# --------------------------
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -84,9 +75,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'porfolio_api.wsgi.application'
 
-# --------------------------
-# DATABASE
-# --------------------------
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -94,9 +83,7 @@ DATABASES = {
     }
 }
 
-# --------------------------
-# PASSWORD VALIDATION
-# --------------------------
+
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -164,3 +151,9 @@ CORS_ALLOW_HEADERS = [
     "accept-encoding",
     "connection",
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ],
+}

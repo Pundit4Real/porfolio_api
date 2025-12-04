@@ -10,7 +10,7 @@ class Service(SlugBaseModel):
     icon = models.CharField(max_length=100, blank=True)
     highlight = models.BooleanField(default=False)  
     url = models.URLField(blank=True)
-    category = models.ForeignKey(Category, related_name='services', on_delete=models.SET_NULL, blank=True, null=True)
+    categories = models.ManyToManyField(Category, related_name='services', blank=True)
     
     class Meta:
         verbose_name = "Service"
